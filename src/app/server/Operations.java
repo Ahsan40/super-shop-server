@@ -1,6 +1,6 @@
 package app.server;
 
-import app.main.User;
+import app.classes.User;
 import app.utils.FileIO;
 
 import java.io.IOException;
@@ -27,22 +27,22 @@ public class Operations {
     public static void login(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
         try {
             User user = (User) receiveObj.readObject();
+            User sUser = Server.data.get(user.getEmail());
             System.out.println(" - Attempt to Login");
             System.out.println(" - Passwords Hash (C): " + user.getPasswords());
-            System.out.println(" - Passwords Hash (S): " + Server.data.get(user.getEmail()).getPasswords());
+            System.out.println(" - Passwords Hash (S): " + sUser.getPasswords());
             if (Server.data.containsKey(user.getEmail())) {
-                if (Server.data.get(user.getEmail()).getPasswords().equals(user.getPasswords())) {
+                if (sUser.getPasswords().equals(user.getPasswords())) {
                     System.out.println(" - login success");
                     sendObj.writeObject("SUCCESS");
                     System.out.println(" - sending user info");
-                    user = Server.data.get(user.getEmail());
-                    sendObj.writeObject(user);
+                    sendObj.writeObject(sUser);
                     System.out.println(" - info send successfully!");
                     return;
                 }
             }
             System.out.println(" - Invalid credentials, login failed!!");
-            sendObj.writeObject("FAILED!");
+            sendObj.writeObject("FAILED");
         }catch (Exception ignore) {}
     }
 

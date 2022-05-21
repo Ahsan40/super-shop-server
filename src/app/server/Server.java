@@ -1,6 +1,6 @@
 package app.server;
 
-import app.main.User;
+import app.classes.User;
 import app.utils.FileIO;
 
 import java.io.IOException;

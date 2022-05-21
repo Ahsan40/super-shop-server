@@ -1,4 +1,4 @@
-package app.main;
+package app.classes;
 
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ public class User implements Serializable {
         this.type = type;
     }
 
-    public User (String email, String passwords) {
+    public User(String email, String passwords) {
         this.email = email;
         this.passwords = passwords;
     }
