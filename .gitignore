@@ -23,6 +23,7 @@
 hs_err_pid*
 
 # Custom
+*.ser
 out/
 /.idea/uiDesigner.xml
 /database.ser
