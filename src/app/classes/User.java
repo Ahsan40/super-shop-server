@@ -22,7 +22,6 @@ public class User implements Serializable {
     public User(String email, String passwords) {
         this.email = email;
         this.passwords = passwords;
-        balance = 0;
     }
 
     public String getName() {
