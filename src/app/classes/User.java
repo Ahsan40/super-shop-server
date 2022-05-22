@@ -75,4 +75,8 @@ public class User implements Serializable {
     public void addBalance(double balance) {
         setBalance(this.balance + balance);
     }
+
+    public void reduceBalance(double balance) {
+        setBalance(this.balance - balance);
+    }
 }

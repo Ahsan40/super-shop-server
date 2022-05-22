@@ -2,9 +2,11 @@ package app.classes;
 
 import java.util.ArrayList;
 public class Cart {
-    ArrayList<Product> list;
+    private final ArrayList<Product> list;
+    private double total;
     public Cart() {
         this.list = new ArrayList<>();
+        this.total = 0;
     }
 
     private int getQuantityInList (Product p) {
@@ -19,9 +21,11 @@ public class Cart {
             list.add(new Product(p.getName(), p.getPrice(), quantity + 1));
         else
             list.add(new Product(p.getName(), p.getPrice(), 1));
+        this.total += p.getPrice();
     }
     public void remove(Product p) {
         list.remove(p);
+        total -= p.getPrice();
     }
 
     public void remove(int index) {
@@ -34,5 +38,13 @@ public class Cart {
 
     public int getCartSize() {
         return list.size();
+    }
+
+    public ArrayList<Product> getCartList() {
+        return this.list;
+    }
+
+    public double getTotal() {
+        return total;
     }
 }
