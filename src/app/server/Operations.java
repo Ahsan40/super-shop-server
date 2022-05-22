@@ -27,12 +27,12 @@ public class Operations {
 
     public static void login(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
         try {
+            System.out.println(" - Attempt to Login");
             User user = (User) receiveObj.readObject();
             User sUser = Server.users.get(user.getEmail());
-            System.out.println(" - Attempt to Login");
-            System.out.println(" - Passwords Hash (C): " + user.getPasswords());
-            System.out.println(" - Passwords Hash (S): " + sUser.getPasswords());
-            if (Server.users.containsKey(user.getEmail())) {
+            if (sUser != null) {
+                System.out.println(" - Passwords Hash (C): " + user.getPasswords());
+                System.out.println(" - Passwords Hash (S): " + sUser.getPasswords());
                 if (sUser.getPasswords().equals(user.getPasswords())) {
                     System.out.println(" - login success");
                     sendObj.writeObject("SUCCESS");
