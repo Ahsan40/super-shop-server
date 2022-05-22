@@ -59,6 +59,9 @@ public class ClientHandler implements Runnable {
                 case "addBalance":
                     Operations.addBalance(sendObj, receiveObj);
                     break;
+                case "addToCart":
+                    Operations.addToCart(sendObj, receiveObj);
+                    break;
 //                case "addBus" -> {
 //                    Operations.addBus(receiveObj, "refreshAll");
 //                }

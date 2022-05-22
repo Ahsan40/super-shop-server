@@ -1,34 +1,39 @@
 package app.server;
 
+import app.classes.Cart;
+import app.classes.Product;
 import app.classes.User;
+import app.main.Config;
 import app.utils.FileIO;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
     public static int clientCount = 0;
     public static HashMap<ClientHandler, String> clients = new HashMap<>();
-    public static HashMap<String, User> data = new HashMap<>();
+    public static HashMap<String, User> users = new HashMap<>();
+    public static ArrayList<Product> products = new ArrayList<>();
+    public static HashMap<String, Cart> carts = new HashMap<>();
     public ServerSocket serverSocket;
-//    public static HashMap<Bus, HashMap<String, ArrayList<Ticket>>>  busData = new HashMap<>();
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
     public void startServer() {
-        String database = "database.ser";
-        String busDataPath = "busData.ser";
 
         try {
-//            FileIO.checkDB(busDataPath, busData);
-            FileIO.checkDB(database, data);
+            FileIO.checkDB(Config.userDatabase, users);
+            FileIO.checkDB(Config.cartDatabase, carts);
+            FileIO.checkDB(Config.productDatabase, products);
 
-            data = FileIO.readObjFromFile(database);
-//            busData = FileIO.readObjFromFile(busDataPath);
+            users = FileIO.readObjFromFile(Config.userDatabase);
+            carts = FileIO.readObjFromFile(Config.cartDatabase);
+            products = FileIO.readObjFromFile(Config.productDatabase);
 
             System.out.println("Server is waiting for client.");
 
