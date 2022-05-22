@@ -6,6 +6,7 @@ import app.classes.User;
 import app.main.Config;
 import app.utils.FileIO;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
@@ -137,6 +138,34 @@ public class Operations {
             throw new RuntimeException(e);
         }
     }
+
+    public static void getProductList(ObjectOutputStream sendObj) {
+        try {
+            sendObj.writeObject(Server.products);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void getCart(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            User user  = (User) receiveObj.readObject();
+            sendObj.writeObject(Server.carts.get(user.getEmail()));
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void getHistory(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            User user  = (User) receiveObj.readObject();
+            sendObj.writeObject(Server.history.get(user.getEmail()));
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 //    synchronized public static void refresh(String cmd) {
 //        System.out.println(" - Start Refreshing...");
