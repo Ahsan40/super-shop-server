@@ -170,6 +170,33 @@ public class Operations {
         }
     }
 
+    public static void addProduct(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            Product p = (Product) receiveObj.readObject();
+            Server.products.add(p);
+            synchronized (Server.products) {
+                FileIO.writeObjToFile(Server.products, Config.productDatabase);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void removeProduct(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            Product p = (Product) receiveObj.readObject();
+            int index = findIndex(p);
+            Server.products.remove(index);
+            synchronized (Server.products) {
+                FileIO.writeObjToFile(Server.products, Config.productDatabase);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 
 //    synchronized public static void refresh(String cmd) {
