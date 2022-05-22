@@ -1,5 +1,6 @@
 package app.server;
 
+import app.classes.Cart;
 import app.classes.Product;
 import app.classes.User;
 import app.main.Config;
@@ -7,6 +8,7 @@ import app.utils.FileIO;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 
 public class Operations {
     synchronized public static void register(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
@@ -81,6 +83,56 @@ public class Operations {
                 FileIO.writeObjToFile(Server.carts, Config.cartDatabase);
             }
             sendObj.writeObject("SUCCESS");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static int findIndex(Product p) {
+        int i = 0;
+        for(Product a: Server.products) {
+            if (p.getName().equalsIgnoreCase(a.getName()) && p.getPrice() == a.getPrice())
+                return i;
+            i++;
+        }
+        return -1;
+    }
+
+    public static void buy(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            User user = (User) receiveObj.readObject();
+            Cart cart = (Cart) receiveObj.readObject();
+
+            Server.carts.get(user.getEmail()).clear();
+            LocalDateTime date = LocalDateTime.now();
+
+            for(Product p: cart.getCartList()) {
+                p.setDate(date);
+                Server.history.get(user.getEmail()).add(p);
+                int index  = findIndex(p);
+                Server.products.get(index).setQuantity(Server.products.get(index).getQuantity() - 1);
+            }
+
+            Server.users.get(user.getEmail()).reduceBalance(cart.getTotal());
+            synchronized (Server.users) {
+                FileIO.writeObjToFile(Server.users, Config.userDatabase);
+            }
+
+            Server.carts.get(user.getEmail()).clear();
+            synchronized (Server.carts) {
+                FileIO.writeObjToFile(Server.carts, Config.cartDatabase);
+            }
+
+            synchronized (Server.products) {
+                FileIO.writeObjToFile(Server.products, Config.productDatabase);
+            }
+
+            synchronized (Server.history) {
+                FileIO.writeObjToFile(Server.history, Config.historyDatabase);
+            }
+
+            sendObj.writeObject("SUCCESS");
+            sendObj.writeObject(Server.history.get(user.getEmail()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

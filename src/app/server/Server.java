@@ -18,6 +18,7 @@ public class Server {
     public static HashMap<String, User> users = new HashMap<>();
     public static ArrayList<Product> products = new ArrayList<>();
     public static HashMap<String, Cart> carts = new HashMap<>();
+    public static HashMap<String, ArrayList<Product>> history = new HashMap<>();
     public ServerSocket serverSocket;
 
     public Server(ServerSocket serverSocket) {
@@ -30,10 +31,12 @@ public class Server {
             FileIO.checkDB(Config.userDatabase, users);
             FileIO.checkDB(Config.cartDatabase, carts);
             FileIO.checkDB(Config.productDatabase, products);
+            FileIO.checkDB(Config.historyDatabase, history);
 
             users = FileIO.readObjFromFile(Config.userDatabase);
             carts = FileIO.readObjFromFile(Config.cartDatabase);
             products = FileIO.readObjFromFile(Config.productDatabase);
+            history = FileIO.readObjFromFile(Config.historyDatabase);
 
             System.out.println("Server is waiting for client.");
 
