@@ -1,8 +1,9 @@
 package app.classes;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Product {
+public class Product implements Serializable {
     private String name;
     private double price;
     private int quantity;

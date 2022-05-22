@@ -1,7 +1,8 @@
 package app.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-public class Cart {
+public class Cart implements Serializable {
     private final ArrayList<Product> list;
     private double total;
     public Cart() {
