@@ -1,6 +1,7 @@
 package app.server;
 
 import app.classes.User;
+import app.main.Main;
 import app.utils.FileIO;
 
 import java.io.IOException;
@@ -55,6 +56,20 @@ public class Operations {
             FileIO.writeObjToFile(Server.data, "database.ser");
             System.out.println(" - Update Info Successful");
         }catch (Exception ignore) {}
+    }
+
+    public static void addBalance(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
+        try {
+            User user = (User) receiveObj.readObject();
+            double amount = (double) receiveObj.readObject();
+            synchronized (Server.data) {
+                Server.data.get(user.getEmail()).addBalance(amount);
+                FileIO.writeObjToFile(Server.data, "database.ser");
+            }
+            sendObj.writeObject("SUCCESS");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    synchronized public static void refresh(String cmd) {

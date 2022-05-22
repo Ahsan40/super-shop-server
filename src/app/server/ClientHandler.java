@@ -56,6 +56,9 @@ public class ClientHandler implements Runnable {
                 case "updateInfo":
                     Operations.updateInfo(receiveObj);
                     break;
+                case "addBalance":
+                    Operations.addBalance(sendObj, receiveObj);
+                    break;
 //                case "addBus" -> {
 //                    Operations.addBus(receiveObj, "refreshAll");
 //                }
