@@ -135,6 +135,7 @@ public class Operations {
 
             sendObj.writeObject("SUCCESS");
             sendObj.writeObject(Server.history.get(user.getEmail()));
+            sendObj.flush();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
