@@ -1,9 +1,13 @@
 package app.classes;
 
+import java.time.LocalDateTime;
+
 public class Product {
     private String name;
     private double price;
     private int quantity;
+
+    private LocalDateTime date;
 
     public Product(String name, double price, int quantity) {
         this.name = name;
@@ -33,5 +37,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

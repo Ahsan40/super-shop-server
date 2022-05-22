@@ -9,17 +9,20 @@ public class User implements Serializable {
     private String mobile;
     private String type;
 
+    private double balance;
+
     public User(String name, String email, String mobile, String passwords, String type) {
         this.name = name;
         this.email = email;
         this.passwords = passwords;
         this.mobile = mobile;
         this.type = type;
+        balance = 0;
     }
-
     public User(String email, String passwords) {
         this.email = email;
         this.passwords = passwords;
+        balance = 0;
     }
 
     public String getName() {
@@ -60,5 +63,17 @@ public class User implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void addBalance(double balance) {
+        setBalance(this.balance + balance);
     }
 }
