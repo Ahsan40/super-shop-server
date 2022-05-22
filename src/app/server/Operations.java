@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Operations {
     synchronized public static void register(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
@@ -150,6 +151,9 @@ public class Operations {
     public static void getCart(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
         try {
             User user  = (User) receiveObj.readObject();
+            if (Server.carts.get(user.getEmail()) == null) {
+                Server.carts.put(user.getEmail(), new Cart());
+            }
             sendObj.writeObject(Server.carts.get(user.getEmail()));
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -159,6 +163,7 @@ public class Operations {
     public static void getHistory(ObjectOutputStream sendObj, ObjectInputStream receiveObj) {
         try {
             User user  = (User) receiveObj.readObject();
+            Server.history.computeIfAbsent(user.getEmail(), k -> new ArrayList<>());
             sendObj.writeObject(Server.history.get(user.getEmail()));
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
